@@ -1,0 +1,86 @@
+	<div class="main-login col-sm-4 col-sm-offset-4" >
+
+	<div style="position: relative;">
+		<div class="cg-busy cg-busy-animation ng-scope ng-hide"
+			ng-show="loadingTracker.active()" style="">
+			<div class="cg-busy cg-busy-backdrop"></div>
+			<div class="cg-busy-default-wrapper"
+				style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;">
+
+				<div class="cg-busy-default-sign">
+
+					<div class="cg-busy-default-spinner">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+						<div class="bar4"></div>
+						<div class="bar5"></div>
+						<div class="bar6"></div>
+						<div class="bar7"></div>
+						<div class="bar8"></div>
+						<div class="bar9"></div>
+						<div class="bar10"></div>
+						<div class="bar11"></div>
+						<div class="bar12"></div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+ 			<div class="alert alert-danger" ng-show="el_msg_is_error">
+				<span class="label label-danger"><i class="icon-remove "></i></span>
+				<span>{{el_msg_error}}</span>
+			</div>
+		
+			<div class="alert alert-success" ng-show="el_msg_is_ok">
+				<span class="label label-success"><i class="icon-ok "></i></span>
+				<span>{{el_msg_ok}}</span>
+			</div>
+			
+			<div class="logo">
+			</div>
+			<section id="session_content">
+				<div class="container">
+					<div class="account-wrapper">
+						<div class="account-body">
+						<form class="form account-form" method="POST" action="login">
+		      				<h3>Bandeja de Tareas</h3>
+		
+		      				<h5>Inicie sesión para acceder</h5>
+					<fieldset>
+						<div class="form-group">
+							<span class="input-icon">
+								<input type="text" class="form-control" name="username" placeholder="Usuario" ng-model="username" ng-enter="summit()">
+								<i class="fa fa-user icon-user"></i> </span>
+						</div>
+						
+						<div class="form-group form-actions">
+							<span class="input-icon">
+								<input type="password" class="form-control password" name="password" placeholder="Contraseña" ng-model="password" ng-enter="summit()">
+								<i class="fa fa-lock icon-lock"></i>
+							</span>
+						</div>
+						<div class="form-actions" style="text-align: center;">
+							<button id= "btn_login"  type="button" class="btn btn-primary" ng-click="summit()">
+								Ingresar <i class="glyphicon glyphicon-log-in"></i>
+							</button>
+						</div>
+					</fieldset>
+		       			</form>	
+		      			</div>	
+					</div>
+				</div>
+			</section>
+			<footer id="footer">
+				<div class="container">
+					<p>2014 &copy; Bandeja Cuyum</p>
+				</div>
+			</footer>
+<!-- 			<div cg-busy="'wait'"></div> -->
+			<!-- end: COPYRIGHT -->
+			
+		</div>
+		
