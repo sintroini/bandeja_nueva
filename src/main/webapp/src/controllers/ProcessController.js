@@ -1,7 +1,7 @@
 function ProcessController($scope, $http, $routeParams) {
 
 	$scope.urlBase="http://" + document.location.hostname + ":"
-	+ document.location.port + "/bandeja";
+	+ document.location.port + "/bandejaCuyum";
 	$scope.urlRest=$scope.urlBase + "/rest/process";
 	$scope.datos = null;
 	$scope.processDefinition="processDefinition=proceso.proceso-prueba";

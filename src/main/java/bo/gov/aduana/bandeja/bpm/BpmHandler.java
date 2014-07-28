@@ -61,9 +61,9 @@ public class BpmHandler {
 	private String deploymentId;
 	private String definitionId;
 
-	private String userId = "jorge"; // usuario con roles: "tecAnalista",
+	private String userId; // usuario con roles: "tecAnalista",
 										// "tecPlataforma" y "Solicitante" ;
-	private String password = "jorge123.";
+	private String password;
 
 	private RemoteRuntimeEngine engine;
 	private KieSession session;
@@ -88,15 +88,18 @@ public class BpmHandler {
 		}
 	}
 
-	private void connectAlternative() throws BusinessException {
-		connect(true);
+	private void connectAlternative(User user) throws BusinessException {
+		connect(true, user);
 	}
 
-	private void connectdefault() throws BusinessException {
-		connect(false);
+	private void connectdefault(User user) throws BusinessException {
+		connect(false, user);
 	}
 
-	private void connect(boolean alternative) throws BusinessException {
+	private void connect(boolean alternative, User user) throws BusinessException {
+		
+		userId = user.getUsername();
+		password = user.getPassword();
 
 		if (deploymentUrlStr != null && deploymentId != null && userId != null
 				&& password != null) {
@@ -148,7 +151,7 @@ public class BpmHandler {
 	public List<ProcessInstanceWrapper> getActiveInstances(
 			String processDefinition, User user) throws BusinessException {
 		if (!connected)
-			connectdefault();
+			connectdefault(user);
 		List<ProcessInstanceLog> remoteInstances = new ArrayList<ProcessInstanceLog>();
 		// FIXME:KIE (versión 6.0.2-redhat-6) tiene un bug en el que cuando no
 		// hay instancias de un proceso dispara un NullPointerException
@@ -215,7 +218,7 @@ public class BpmHandler {
 	public ProcessInstanceWrapper getProcessInstance(Long processInstance,
 			boolean withVariables, User user) throws BusinessException {
 		if (!connected)
-			connectAlternative();
+			connectAlternative(user);
 
 		Map<String, String> params = new HashMap<>(2);
 		params.put("deploymentId", deploymentId);
@@ -242,11 +245,11 @@ public class BpmHandler {
 
 	@SuppressWarnings("unchecked")
 	public List<TaskWrapper> getInstanceTasks(Integer page, Integer pageSize,
-			HashMap<String, List<String>> parameters, Boolean union)
+			HashMap<String, List<String>> parameters, Boolean union, User user)
 			throws BusinessException {
 
 		if (!connected)
-			connectAlternative();
+			connectAlternative(user);
 
 		TaskSummaryList task = new TaskSummaryList();
 		ClientResponse<?> response;
@@ -286,21 +289,21 @@ public class BpmHandler {
 
 	public List<TaskWrapper> getInstanceTasks(
 			HashMap<String, List<String>> parameters, Boolean ownTasks,
-			Integer page, Integer pageSize, Boolean union)
+			Integer page, Integer pageSize, Boolean union, User user)
 			throws BusinessException {
 		if (!connected)
-			connectdefault();
+			connectdefault(user);
 
 		List<TaskSummary> tasks = new ArrayList<TaskSummary>();
 		List<TaskWrapper> newTasks = new ArrayList<TaskWrapper>();
 
 		if (ownTasks != null && ownTasks) {
-			tasks = taskService.getTasksOwned(userId, "en-UK");
+			tasks = taskService.getTasksOwned(user.getUsername(), "en-UK");
 			newTasks = wrapTaskSummary(tasks);
 		} else {
 			// buscamos las tareas asignadas al grupo del usuario referenciado
 			// por "userId"
-			tasks = taskService.getTasksAssignedAsPotentialOwner(userId,
+			tasks = taskService.getTasksAssignedAsPotentialOwner(user.getUsername(),
 					"en-UK");
 			newTasks = wrapTaskSummary(tasks);
 		}
@@ -344,7 +347,7 @@ public class BpmHandler {
 
 	public void claim(Long taskId, User user) throws BusinessException {
 		if (!connected)
-			connectdefault();
+			connectdefault(user);
 		// se trata de obtener la tarea
 		Task task = taskService.getTaskById(taskId);
 
@@ -356,7 +359,7 @@ public class BpmHandler {
 		// Map<String, Object> taskParams = new HashMap<String, Object>();
 
 		// reclamo la tarea
-		taskService.claim(task.getId(), userId);
+		taskService.claim(task.getId(), user.getUsername());
 
 		// completo la tarea
 		// taskService.complete(task.getId(), userId, taskParams);
@@ -366,7 +369,7 @@ public class BpmHandler {
 
 	public void release(Long taskId, User user) throws BusinessException {
 		if (!connected)
-			connectdefault();
+			connectdefault(user);
 		// se trata de obtener la tarea
 		Task task = taskService.getTaskById(taskId);
 
@@ -378,7 +381,7 @@ public class BpmHandler {
 		// Map<String, Object> taskParams = new HashMap<String, Object>();
 
 		// reclamo la tarea
-		taskService.release(task.getId(), userId);
+		taskService.release(task.getId(), user.getUsername());
 
 		// completo la tarea
 		// taskService.complete(task.getId(), userId, taskParams);
@@ -539,11 +542,11 @@ public class BpmHandler {
 		return "index";
 	}
 
-	public List<VariableWrapper> getProcessInstanceVariable(Long processInstance)
+	public List<VariableWrapper> getProcessInstanceVariable(Long processInstance, User user)
 			throws BusinessException {
 
 		if (!connected)
-			connectAlternative();
+			connectAlternative(user);
 
 		Map<String, String> params = new HashMap<>(2);
 		params.put("deploymentId", deploymentId);

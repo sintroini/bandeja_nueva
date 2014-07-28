@@ -18,8 +18,9 @@ import org.apache.log4j.Logger;
 
 import bo.gov.aduana.bandeja.bpm.kiewrapper.ProcessInstanceWrapper;
 import bo.gov.aduana.bandeja.bpm.kiewrapper.VariableWrapper;
-import bo.gov.aduana.bandeja.response.ProcessResponse;
+import bo.gov.aduana.bandeja.entities.User;
 import bo.gov.aduana.bandeja.service.BpmService;
+import bo.gov.aduana.bandeja.service.SessionService;
 
 @Path("/process")
 @RequestScoped
@@ -29,19 +30,26 @@ public class ProcessRestService {
 		
 	@Inject Logger log;
 	
+	@Inject
+	private User user;
+	
+	@Inject
+	private SessionService sessionSrv;
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ProcessInstanceWrapper> getProcessIntances(@QueryParam("processDefinition") String processDefinition, @QueryParam("instance") Long processInstance) {
+	public List<ProcessInstanceWrapper> getProcessIntances(@QueryParam("processDefinition") String processDefinition, @QueryParam("instance") Long processInstance,@Context HttpServletRequest request) {
 		List<ProcessInstanceWrapper> lstProcess = new ArrayList<ProcessInstanceWrapper>();
 		
+		user = sessionSrv.getUser(request);
 		
 		try {
 			if(processInstance!=null){
 				ProcessInstanceWrapper instance = null;
-				instance = bpmSrv.getActiveProcessInstance(processInstance, null);
+				instance = bpmSrv.getActiveProcessInstance(processInstance, user);
 				lstProcess.add(instance);
 			}else
-				lstProcess = bpmSrv.getActiveProcessInstances(processDefinition, null);
+				lstProcess = bpmSrv.getActiveProcessInstances(processDefinition, user);
 		
 		} catch (Exception e) {
 			log.debug("Error al recuperar las instancias de procesos");
@@ -54,8 +62,10 @@ public class ProcessRestService {
     @Path("/instance/{instanceId:[0-9]+}/variables")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> viewInstanceVariables(@PathParam("instanceId") Long processInstance, @Context HttpServletRequest request) throws Exception {
+		
+		user = sessionSrv.getUser(request);
 
-    	List <VariableWrapper> lstVar = bpmSrv.getProcessInstanceVariables(processInstance, null);
+    	List <VariableWrapper> lstVar = bpmSrv.getProcessInstanceVariables(processInstance, user);
     	List<String> response=new ArrayList<String>();
     	
     	for (VariableWrapper var : lstVar) {
@@ -69,7 +79,9 @@ public class ProcessRestService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> viewInstanceVariablesCompleted(@PathParam("instanceId") Long processInstance, @Context HttpServletRequest request) throws Exception {
 
-    	List <VariableWrapper> lstVar = bpmSrv.getProcessCompletedVariables(processInstance);
+		user = sessionSrv.getUser(request);
+
+    	List <VariableWrapper> lstVar = bpmSrv.getProcessCompletedVariables(processInstance,user);
     	List<String> response=new ArrayList<String>();
     	
     	for (VariableWrapper var : lstVar) {

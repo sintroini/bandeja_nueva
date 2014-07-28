@@ -3,7 +3,7 @@
 function LoginController($scope, $http, $routeParams) {
 
 	$scope.urlBase="http://" + document.location.hostname + ":"
-	+ document.location.port + "/bandeja";
+	+ document.location.port + "/bandejaCuyum";
 	$scope.urlLogin=$scope.urlBase + "/rest/session/login";
 	$scope.urlLogout=$scope.urlBase + "/rest/session/logout";
 

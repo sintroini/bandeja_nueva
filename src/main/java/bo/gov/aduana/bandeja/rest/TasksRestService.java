@@ -19,8 +19,10 @@ import org.apache.log4j.Logger;
 import org.kie.api.task.model.Status;
 
 import bo.gov.aduana.bandeja.bpm.kiewrapper.TaskWrapper;
+import bo.gov.aduana.bandeja.entities.User;
 import bo.gov.aduana.bandeja.service.BpmService;
 import bo.gov.aduana.bandeja.service.QueryService;
+import bo.gov.aduana.bandeja.service.SessionService;
 
 @Path("/tasks")
 @RequestScoped
@@ -29,6 +31,12 @@ public class TasksRestService {
 	@Inject BpmService bpmSrv;
 		
 	@Inject Logger log;
+	
+	@Inject
+	private User user;
+	
+	@Inject
+	private SessionService sessionSrv;
 	
 	@Inject
 	private QueryService qsrv;
@@ -49,8 +57,10 @@ public class TasksRestService {
 		
 		List<TaskWrapper> lstTasks = null;
 		HashMap<String, List<String>> parameters = qsrv.createMap(workItemId, taskId, businessAdministrator, potentialOwner, status, taskOwner, processInstanceId);
+		user = sessionSrv.getUser(request);
+
 		try {
-			lstTasks = bpmSrv.getInstanceTasks(ownTasks, page, pageSize, parameters, union, null);
+			lstTasks = bpmSrv.getInstanceTasks(ownTasks, page, pageSize, parameters, union, user);
 		} catch (Exception e) {
 			log.debug("Error al recuperar las instancias de procesos");
 		}
@@ -63,7 +73,9 @@ public class TasksRestService {
     @Produces("application/json;charset=UTF-8")
     public String claim(@PathParam("id") Long taskId,@Context HttpServletRequest request){
     	log.debug("claiming task "+taskId);
-    	boolean result = bpmSrv.claimTask(taskId,null);
+		user = sessionSrv.getUser(request);
+
+    	boolean result = bpmSrv.claimTask(taskId,user);
         return "{\"success\":\""+result+"\"}";
     }
     
@@ -72,7 +84,9 @@ public class TasksRestService {
     @Produces("application/json;charset=UTF-8")
     public String release(@PathParam("id") Long taskId,@Context HttpServletRequest request){
     	log.debug("releasing task "+taskId);
-    	boolean result = bpmSrv.releaseTask(taskId, null);
+		user = sessionSrv.getUser(request);
+
+    	boolean result = bpmSrv.releaseTask(taskId, user);
         return "{\"success\":\""+result+"\"}";
     }
 }

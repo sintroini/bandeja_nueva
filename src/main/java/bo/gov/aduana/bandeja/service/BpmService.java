@@ -58,11 +58,11 @@ public class BpmService {
 		
 		try {
 			if(ownTasks!=null && ownTasks.booleanValue())
-				tasks = bpm.getInstanceTasks(parameters, ownTasks, page, pageSize, union);
+				tasks = bpm.getInstanceTasks(parameters, ownTasks, page, pageSize, union, user);
 			else if(!qsrv.isEmpty(parameters))
-				tasks = bpm.getInstanceTasks(page, pageSize,parameters,union);
+				tasks = bpm.getInstanceTasks(page, pageSize,parameters,union, user);
 			else
-				tasks = bpm.getInstanceTasks(parameters, null, page, pageSize, union);
+				tasks = bpm.getInstanceTasks(parameters, null, page, pageSize, union, user);
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -92,9 +92,9 @@ public class BpmService {
 		}
 	}
 	
-	public List<VariableWrapper> getProcessCompletedVariables(Long processInstanceId) throws BusinessException {
+	public List<VariableWrapper> getProcessCompletedVariables(Long processInstanceId, User user) throws BusinessException {
 		log.debug("Devolviendo listado variables de instancias de procesos completados");
-		List<VariableWrapper> instance = bpm.getProcessInstanceVariable(processInstanceId);
+		List<VariableWrapper> instance = bpm.getProcessInstanceVariable(processInstanceId, user);
 		return instance;
 	}
 
