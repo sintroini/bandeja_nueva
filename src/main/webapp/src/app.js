@@ -22,6 +22,10 @@ angular.module('app', []).
 		      templateUrl: 'src/views/home.html',
 		      controller: HomeController
           }).
+          when('/display', {
+		      templateUrl: 'src/views/display.html',
+		      controller: DisplayController
+          }).
       //cualquier ruta no definida
       otherwise({
           redirectTo: '/login'});

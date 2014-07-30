@@ -29,7 +29,7 @@ function LoginController($scope, $http, $routeParams) {
 			success(function(status, data) {
 				window.location.href = $scope.urlBase +"/#/home";
 				
-	    	  console.info(status);
+//	    	  console.info(status);
 	        }).
 	        error(function(status) {
 	          $scope.status = status.mensaje;
@@ -39,6 +39,11 @@ function LoginController($scope, $http, $routeParams) {
 	
 	$scope.summit =  function() {
 		$scope.login();
+	};
+	
+	$scope.ngEnter =  function(keyEvent) {
+		if (keyEvent.which === 13)
+			$scope.summit();
 	};
 	
 	$scope.logout = function(){		

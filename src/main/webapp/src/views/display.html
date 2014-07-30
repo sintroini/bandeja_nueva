@@ -1,0 +1,61 @@
+<nav class="navbar navbar-default" role="navigation">
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav nav-tabs" role="tablist">
+      	<li class="active"><a href="/bandejaCuyum/#/home"><span class="glyphicon glyphicon-home"></span>		Inicio</a></li>
+        <li class="active"><a href="/bandejaCuyum/#/process"><span class="glyphicon glyphicon-list-alt"></span>		Procesos</a></li>
+        <li class="active"><a href="/bandejaCuyum/#/tasks"><span class="glyphicon glyphicon-tasks"></span>		Tareas</a></li>
+    </ul><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<!-- start: PAGE -->
+
+<div class="content">
+<div class="container" ng-controller="DisplayController">
+	<form submit-url="/aduboSys/rest/dataIn" id="altacredito.altacredito.inicio">
+	<!--This form was created by transforming a javaRosa-style (X)Form using an XSLT sheet.-->
+		
+		<br>
+		<div class="panel panel-default">
+			  <!-- Default panel contents -->
+			<div class="panel-heading">
+<!-- 				<div class="page-header"> -->
+					<h3 class="panel-title" id="form-title">Inicio</h3>
+<!-- 					<ul class="icons"> -->
+<!-- 						<li><a href="#"><span id="version">Versión: 1</span></a></li> -->
+<!-- 					</ul> -->
+<!-- 				</div> -->
+			</div>
+			<div class="notice" id="internal-messages"></div>
+			<br>
+			<div class="panel-body">
+			  <!-- Table -->
+				<table id="vars_table"class="table table-striped table-bordered table-hover table-full-widthtable table-striped table-bordered bootstrap-datatable datatable dTable dataTable">				
+				
+				</table>
+			</div>
+			<div class="panel-footer">
+			<fieldset>
+<!-- 				<div class="well block"> -->
+					<div>
+						<div class="form-actions align-left">
+							<button id= "btn_saveDraft"  type="button" class="btn" ng-click="saveDraft()">
+								<i class="glyphicon glyphicon-floppy-save"></i> Guardar Borrador 
+							</button>&nbsp &nbsp
+							<button id= "btn_saveFinal"  type="button" class="btn btn-success" ng-click="saveFinal()">
+								<i class="glyphicon glyphicon-floppy-saved"></i> Listo 
+							</button>
+	<!-- 						<input  ng-click="saveDraft()" value="Guardar Borrador" class="btn" type="button"><i class="glyphicon glyphicon-floppy-save"></i> -->
+	<!-- 						<input draft="false" ng-click="saveFinal()" value="Listo" class="btn btn-success confirm" type="button"> -->
+						</div>
+					</div>
+<!-- 				</div> -->
+			</fieldset>
+			</div>
+		</div>
+
+		
+	</form>
+
+	<div class="separator-doubled"></div>
+</div>
+</div>

@@ -4,7 +4,7 @@ function ProcessController($scope, $http, $routeParams) {
 	+ document.location.port + "/bandejaCuyum";
 	$scope.urlRest=$scope.urlBase + "/rest/process";
 	$scope.datos = null;
-	$scope.processDefinition="processDefinition=proceso.proceso-prueba";
+	$scope.processDefinition="processDefinition=altacredito.altacredito";
 	$scope.query = getQueryParam(document.location.href);
 	$scope.jsonToShow = null;
 	var oTable = null;
@@ -146,7 +146,17 @@ function ProcessController($scope, $http, $routeParams) {
 		 	 	"fnDrawCallback": function( oSettings ) {
 					settingRow();
 			    },
-		        
+			    "oLanguage" : {
+					"sLengthMenu" : "Cantidad de _MENU_ ",
+					"sInfo": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+					"sInfoEmpty": "Mostrando 0 a 0 de 0 registros",
+					"sEmptyTable" : "No hay datos disponibles",
+					"sSearch": "Buscar:",
+					"oPaginate": {
+				        "sPrevious": "Anterior",
+				        "sNext": "Siguiente",
+				      }
+				},
 		        "aoColumns" : [{
 					"mData" : "id"
 				}, {

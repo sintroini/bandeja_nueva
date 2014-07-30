@@ -73,6 +73,17 @@ public class ProcessRestService {
 		}
     	return response;
     }
+	@GET
+    @Path("/variables/{instanceId:[0-9]+}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List <VariableWrapper> getInstanceVariables(@PathParam("instanceId") Long processInstance, @Context HttpServletRequest request) throws Exception {
+		
+		user = sessionSrv.getUser(request);
+
+    	List <VariableWrapper> lstVar = bpmSrv.getProcessInstanceVariables(processInstance, user);
+    	
+    	return lstVar;
+    }
 	
 	@GET
     @Path("/instance/{instanceId:[0-9]+}/completed/variables")

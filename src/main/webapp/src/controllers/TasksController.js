@@ -24,7 +24,8 @@ function TasksController($scope, $http, $routeParams) {
 						.closest('tr').get(0));
 				var record = oTable.fnGetData(rowIndex);
 			
-				window.open(record.taskFormUrl); 
+				window.location.href = $scope.urlBase +"/#/display?instanceId="+record.processInstance;
+//				window.open(record.taskFormUrl); 
 			});
 		}else if(button.attr("role")=="action_process"){
 			button.on("click",function(evt){
@@ -189,6 +190,17 @@ function TasksController($scope, $http, $routeParams) {
 		 	 	"fnDrawCallback": function( oSettings ) {
 					settingRow();
 			    },
+			    "oLanguage" : {
+					"sLengthMenu" : "Cantidad de _MENU_ ",
+					"sInfo": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+					"sInfoEmpty": "Mostrando 0 a 0 de 0 registros",
+					"sEmptyTable" : "No hay datos disponibles",
+					"sSearch": "Buscar:",
+					"oPaginate": {
+				        "sPrevious": "Anterior",
+				        "sNext": "Siguiente",
+				      }
+				},
 		        
 		        "aoColumns" : [{
 					"mData" : "id"
@@ -227,7 +239,7 @@ function TasksController($scope, $http, $routeParams) {
 								
 								var own = getUrlVars()["own"];
 								
-								if(own!= undefined && own==true || oObj.ownerId!=undefined) {
+								if(own!= undefined && own==true || oObj.ownerId!=undefined || oObj.ownerId!=null) {
 									a = a + "<button type='button' class='btn btn-primary btn-xs' role='action_release' data-toggle='tooltip' data-placement='top' title='Liberar'><span class='glyphicon glyphicon-open'></span></button> "+
 									"<button type='button' class='btn btn-primary btn-xs' role='action_form' data-toggle='tooltip' data-placement='top' title='Abrir Formulario'><span class='glyphicon glyphicon-search'></span></button> ";
 								}else
