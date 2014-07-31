@@ -388,6 +388,18 @@ public class BpmHandler {
 		disconnect();
 
 	}
+	
+	public void complete(Long taskId, HashMap<String, Object> taskParams, User user)throws Exception{
+		
+		if(!connected) 
+    		connectdefault(user);
+		//taskService.claim(taskId, userId);
+		System.out.println("taskService - srart tarea: " + taskId );
+		taskService.start(taskId, userId);
+		System.out.println("taskService - complete tarea: " + taskId );
+		taskService.complete(taskId, userId, taskParams);
+		
+	}
 
 	/*
 	 * 
@@ -536,11 +548,11 @@ public class BpmHandler {
 		return task;
 	}
 
-	public String completarTarea(Long taskId) {
-		Task task = taskService.getTaskById(taskId);
-		log.info("HOLA!! " + task.getNames());
-		return "index";
-	}
+//	public String completarTarea(Long taskId) {
+//		Task task = taskService.getTaskById(taskId);
+//		log.info("HOLA!! " + task.getNames());
+//		return "index";
+//	}
 
 	public List<VariableWrapper> getProcessInstanceVariable(Long processInstance, User user)
 			throws BusinessException {

@@ -24,7 +24,7 @@ function TasksController($scope, $http, $routeParams) {
 						.closest('tr').get(0));
 				var record = oTable.fnGetData(rowIndex);
 			
-				window.location.href = $scope.urlBase +"/#/display?instanceId="+record.processInstance;
+				window.location.href = $scope.urlBase +"/#/display?instanceId="+record.processInstance+"&taskId="+record.id;
 //				window.open(record.taskFormUrl); 
 			});
 		}else if(button.attr("role")=="action_process"){

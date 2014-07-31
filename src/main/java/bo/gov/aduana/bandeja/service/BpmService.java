@@ -75,8 +75,8 @@ public class BpmService {
 			bpm.claim(taskId, user);
 			return true;
 		} catch (Exception e) {
-			log.debug("Se captur\u00f3 un error tratando de reclamar la tarea "+taskId,e);
-			log.error("Se captur\u00f3 un error tratando de reclamar la tarea "+taskId);
+			log.debug("Se captur\u00f3 un error tratando de liberar la tarea "+taskId,e);
+			log.error("Se captur\u00f3 un error tratando de liberar la tarea "+taskId);
 			return false;
 		}
 	}
@@ -88,6 +88,17 @@ public class BpmService {
 		} catch (Exception e) {
 			log.debug("Se captur\u00f3 un error tratando de reclamar la tarea "+taskId,e);
 			log.error("Se captur\u00f3 un error tratando de reclamar la tarea "+taskId);
+			return false;
+		}
+	}
+	
+	public Boolean completeTask(Long taskId, HashMap<String, Object> taskParams, User user){
+		try {
+			bpm.complete(taskId, taskParams, user);
+			return true;
+		} catch (Exception e) {
+			log.debug("Se captur\u00f3 un error tratando de completar la tarea "+taskId,e);
+			log.error("Se captur\u00f3 un error tratando de completar la tarea "+taskId);
 			return false;
 		}
 	}

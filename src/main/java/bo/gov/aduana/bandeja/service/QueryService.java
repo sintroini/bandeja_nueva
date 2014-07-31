@@ -11,48 +11,6 @@ public class QueryService {
 
 	private HashMap<String, List<String>> parameter;
 	
-//	public HashMap<String, List<String>> createMap(Long workItemId, Long taskId, String businessAdministrator, String potentialOwner, Status status, String taskOwner, Long instance){
-//		
-//		parameter = new HashMap<>();
-//		
-//		if(workItemId!=null)
-//			parameter.put("workItemId", workItemId.toString());
-//		else
-//			parameter.put("workItemId", null);
-//		
-//		if(taskId!=null)
-//			parameter.put("taskId", taskId.toString());
-//		else
-//			parameter.put("taskId", null);
-//		
-//		if(businessAdministrator!=null)
-//			parameter.put("businessAdministrator", businessAdministrator);
-//		else
-//			parameter.put("businessAdministrator", null);
-//		
-//		if(potentialOwner!=null)
-//			parameter.put("potentialOwner", potentialOwner);
-//		else
-//			parameter.put("potentialOwner", null);
-//		
-//		if(status!=null)
-//			parameter.put("status", status.toString());
-//		else
-//			parameter.put("status", null);
-//		
-//		if(taskOwner!=null)
-//			parameter.put("taskOwner", taskOwner);
-//		else
-//			parameter.put("taskOwner", null);
-//		
-//		if(instance!=null)
-//			parameter.put("processInstanceId", instance.toString());
-//		else
-//			parameter.put("processInstanceId", null);
-//		
-//		return parameter;
-//	}
-	
 	public boolean isEmpty(HashMap<String, List<String>> parameter) {
 		
 		boolean empty=true;
@@ -154,6 +112,30 @@ public class QueryService {
 		
 		return parameter;
 	}
+
+	public HashMap<String, Object> createTaskParam(String query) {
+		
+		String[] params = null;
+		if(query!=null && !query.isEmpty()){
+			params = query.split("&");
+		}else{
+			return null;
+		}
+		return getTaskParam(params);
+	}
  	
+	public HashMap<String, Object> getTaskParam(String[] params){
+		HashMap<String, Object> mapParam = new HashMap<>();
+		
+		String key;
+		Object value;
+
+		for (String string : params) {
+			key= new String(string.substring(0, string.indexOf('=')));
+			value = (Object) new String (string.substring(string.indexOf('=')+1));
+			mapParam.put(key, value);
+		}
+		return mapParam;
+	}
 	
 }

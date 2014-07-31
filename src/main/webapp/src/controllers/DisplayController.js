@@ -38,12 +38,11 @@ function DisplayController($scope, $http, $routeParams) {
 					"mData" : "name",
 					
 				}, {
-//					"mData" : "value",
 					"mData" : function (oObj){
 						
-						var a = "<input autocomplete='off' type='text' value='"+oObj.value+"' name='nombreVar' data-constraint='string-length .&gt;=0 and string-length .&lt;=255' data-constraint-msg='Ingrese valor mayor o igual a 0 y menor o igual a 255' data-type-xml='string'>";
+						var a = "<input autocomplete='off' type='text' value='"+oObj.value+"' name='"+oObj.name+"' data-constraint='string-length .&gt;=0 and string-length .&lt;=255' data-constraint-msg='Ingrese valor mayor o igual a 0 y menor o igual a 255' data-type-xml='string'>";
 						$scope.nombreVar = oObj.value;
-						console.info(oObj.value);
+						console.info(oObj.name +":"+ oObj.value);
 						return a;
 					}
 				}
@@ -55,12 +54,27 @@ function DisplayController($scope, $http, $routeParams) {
 	
 	$("#nav-logout").html("<a id='blogout'><span class='glyphicon glyphicon-log-out' style='font-size:18px; top:15px; '> Salir</span></a>");
 	
-	$scope.saveDraft =  function() {
-		console.info("Guardar borrador");
+	$scope.cancel =  function() {
+		console.info("cancelando modificacion");
+		window.location.href = $scope.urlBase +"/#/home";
 	};
 	
-	$scope.saveFinal =  function() {
-		console.info("Guardar final");
+	$scope.complete =  function() {
+		console.info("Completando tarea");
+		
+		var taskId = getUrlVars()["taskId"];
+		
+		$.ajax({
+			  type: "POST",
+			  url:  $scope.urlBase + "/rest/tasks/"+taskId+"/complete",
+			  success: function(data){
+				  console.log("RESULT de COMPLETE: ",data);
+				  window.location.reload(true);
+			  },
+			  failure:function(a){
+				  console.log("FAILURE ",a);
+			  }
+			});
 	};
 	
 	function getUrlVars()

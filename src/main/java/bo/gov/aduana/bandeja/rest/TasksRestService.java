@@ -89,4 +89,16 @@ public class TasksRestService {
     	boolean result = bpmSrv.releaseTask(taskId, user);
         return "{\"success\":\""+result+"\"}";
     }
+    
+    @POST
+    @Path("/{id:[0-9]+}/complete")
+    @Produces("application/json;charset=UTF-8")
+    public String complete(@PathParam("id") Long taskId,@QueryParam("query") String query,@Context HttpServletRequest request){
+    	log.debug("completing task "+taskId);
+		user = sessionSrv.getUser(request);
+
+		HashMap<String, Object> taskParams = qsrv.createTaskParam(query);
+    	boolean result = bpmSrv.completeTask(taskId, taskParams, user);
+        return "{\"success\":\""+result+"\"}";
+    }
 }
